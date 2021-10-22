@@ -75,7 +75,7 @@
                 </div>
             </div>
         </nav>
-        <livewire:counter />
+        <livewire:show-users />
 
         <main class="py-4">
             @yield('content')
