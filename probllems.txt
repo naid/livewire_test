@@ -1,1 +1,4 @@
 1) changes in Livewire and Laravel8
+2)
+Route::livewire('/', 'home'); //won't work in Laravel 8
+Route::get('/' , 'App\Http\Controllers\HomeController@index');
