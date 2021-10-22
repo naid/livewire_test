@@ -1,13 +1,14 @@
 1) Installed laragon first
 2) Installed Livewire (https://laravel-livewire.com/docs/2.x/installation)
-3) Install Spatie-Laravel-Permission
+
 
 composer require doctrine/dbal
 git init
+
 php artisan make:migration create_addresses_table
 php artisan make:migration create_contacts_table
 
-
+3) Install Spatie-Laravel-Permission
 
 
 >composer require spatie/laravel-activitylog
