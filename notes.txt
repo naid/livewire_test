@@ -49,3 +49,5 @@ php artisan migrate
 
 
 php artisan make:migration modify_users_table --table=users
+$table->renameColumn('name', 'first_name');
+$table->renameColumn('name', 'first_name');
