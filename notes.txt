@@ -11,7 +11,7 @@ php artisan make:migration create_contacts_table
 3) Install Spatie-Laravel-Permission
 
 
->composer require spatie/laravel-activitylog
+>composer require spatie/laravel-permission
 >'providers' => [
     // ...
     Spatie\Permission\PermissionServiceProvider::class,
