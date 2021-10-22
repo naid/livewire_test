@@ -9,7 +9,7 @@ class Counter extends Component
     public $count;
     public function mount()
     {
-        $this->count = 3000;
+        $this->count = 1000;
     }
     public function increment()
     {

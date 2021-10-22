@@ -80,7 +80,7 @@
             @yield('content')
         </main>
     </div>
-    <livewire:counter />
+    <livewire:home />
     <livewire:scripts />
 </body>
 </html>

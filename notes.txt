@@ -46,3 +46,6 @@ php artisan ui bootstrap
 php artisan ui bootstrap --auth 
 npm install && npm run dev
 php artisan migrate
+
+
+php artisan make:migration modify_users_table --table=users
