@@ -1,4 +1,4 @@
-<div>
+<div >
     <div class="form-group">
         <label for="exampleInputPassword1">First Name</label>
         <input type="text" wire:model="first_name" class="form-control input-sm"  placeholder="first_name">
@@ -29,5 +29,5 @@
     </div>
 
 
-    <button wire:click="store()" class="btn btn-primary">Submit</button>
+    <button wire:click="store()" class="btn btn-success">Submit</button>
 </div>

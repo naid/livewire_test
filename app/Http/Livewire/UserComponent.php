@@ -61,7 +61,7 @@ class UserComponent extends Component
         $this->company_email = null;
     }
 
-    private function cancelUpdate()
+    private function cancel()
     {
         $this->resetInput();
         $this->updateMode = false;
