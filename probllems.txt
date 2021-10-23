@@ -2,3 +2,7 @@
 2)
 Route::livewire('/', 'home'); //won't work in Laravel 8
 Route::get('/' , 'App\Http\Controllers\HomeController@index');
+
+
+Turboliinks not fully supported in LivewireV2
+-can only attain SPA-esque experience

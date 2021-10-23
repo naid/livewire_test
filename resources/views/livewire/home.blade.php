@@ -1,3 +1,4 @@
 <div>
-    I am home blade
+    I am LIVEWIRE home blade
+    <livewire:show-users />
 </div>

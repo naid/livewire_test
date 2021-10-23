@@ -75,8 +75,6 @@
                 </div>
             </div>
         </nav>
-        <livewire:show-users />
-
         <main class="py-4">
             @yield('content')
         </main>
