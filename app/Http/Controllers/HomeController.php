@@ -25,4 +25,9 @@ class HomeController extends Controller
     {
         return view('livewire.home');
     }
+
+    public function users()
+    {
+        return view('livewire.user');
+    }
 }
