@@ -79,7 +79,6 @@
             @yield('content')
         </main>
     </div>
-    <livewire:home />
     <livewire:scripts />
 </body>
 </html>
