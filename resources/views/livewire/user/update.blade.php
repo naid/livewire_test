@@ -22,4 +22,5 @@
         <input type="email" class="form-control input-sm" placeholder="Company email" wire:model="company_email">
     </div>
     <button wire:click="update()" class="btn btn-primary">Update</button>
+    <button wire:click="update()" class="btn btn-primary">Cancel</button>
 </div>

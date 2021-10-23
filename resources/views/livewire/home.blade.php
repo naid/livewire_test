@@ -14,6 +14,8 @@
                         </div>
                     @endif
                  
+                    <livewire:users-table/>
+
                     {{ __('You are logged in!') }}
                 </div>
             </div>

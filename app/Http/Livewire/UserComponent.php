@@ -4,11 +4,14 @@ namespace App\Http\Livewire;
 
 use App\Models\User;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class UserComponent extends Component
 {
-    public 
-        $data,
+    use WithPagination;
+    public
+        $headers,
+        // $data,
         $first_name,
         $last_name,
         $email,
@@ -18,11 +21,36 @@ class UserComponent extends Component
         $selected_id;
     public $updateMode = false;
 
+    private function headerConfig()
+    {
+        return [
+            'id' => 'ID',
+            'first_name' => 'First Name',
+            'last_name' => 'Last Name',
+            'email' => 'Email',
+            'company_name' => 'Company Name',
+            'company_email' => 'Company Email',
+        ];
+    }
+
+    public function mount()
+    {
+        $this->headers = $this->headerConfig();
+    }
+
+    private function resultData()
+    {
+        //return User::all();
+        return User::where('id', '!=', auth()->user()->id)->paginate(5);
+    }
+
     public function render()
     {
-        $this->data = User::all();
-        return view('livewire.user.list');
+        return view('livewire.user.list', [
+            'data' => $this->resultData()
+        ]);
     }
+
     private function resetInput()
     {
         $this->first_name = null;
@@ -32,6 +60,14 @@ class UserComponent extends Component
         $this->company_name = null;
         $this->company_email = null;
     }
+
+    private function cancelUpdate()
+    {
+        $this->resetInput();
+        $this->updateMode = false;
+    }
+
+
     public function store()
     {
         $this->validate([
