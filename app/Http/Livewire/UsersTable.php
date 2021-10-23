@@ -31,9 +31,12 @@ class UsersTable extends LivewireDatatable
             Column::name('email')
                 ->label('Email'),
 
+            Column::edit()->label('delete'),
+
             DateColumn::name('created_at')
                 ->label('Created at'),
-            
+
+           
             //Column::label('Actions')
         ];
     }

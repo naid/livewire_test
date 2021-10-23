@@ -1,5 +1,5 @@
 <div>
-    <div class="col-md-6">
+    <div class="col-md-12">
 
     @if (count($errors) > 0)
         <div class="alert alert-danger">
@@ -20,7 +20,7 @@
         @include('livewire.user.create')
     @endif
 
-
+    <livewire:users-table/>
     <table class="table table-striped" style="margin-top:20px;">
         <tr>
             <td>NO</td>
