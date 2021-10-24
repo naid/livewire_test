@@ -78,4 +78,12 @@ class User extends Authenticatable
         ->logFillable()->logOnlyDirty();
         // Chain fluent methods for configuration options
     }
+
+    protected static function bootActionableTrait()
+    {
+        self::deleting(function ($model) {
+            $model->addresses()->delete();
+            $model->contacts()->delete();
+        });
+    }
 }

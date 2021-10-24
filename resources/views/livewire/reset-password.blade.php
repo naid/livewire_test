@@ -6,6 +6,7 @@
     @enderror
 <div class="card">
     <div class="card-header">Reset Password</div>
+    
     <div class="card-body">
             <div class="form-group row">
                 <label for="password" class="col-md-4 col-form-label text-md-right">{{ 'Password' }}</label>
@@ -15,8 +16,6 @@
                         name="password"
                         wire:model="password"
                         >
-                        {{$password}}
-
                         @error('password')
                         <span class="help-block text-danger">{{$message}}</span>
                         @enderror
@@ -29,15 +28,15 @@
                     <input type="password" class="form-control" name="password_confirmation"
                     wire:model="password_confirmation"
                     >
-                    {{$password_confirmation}}
                 </div>
             </div>
             
             <div class="form-group row mb-0">
                 <div class="col-md-6 offset-md-4">
-                    <button type="submit" wire:click="updatePassword" class="btn btn-primary">
+                    <button type="submit" wire:click="updatePassword" class="btn btn-success">
                         {{ 'Change Password' }}
                     </button>
+                    <button onclick="location.href='{{url('')}}'" class="btn btn-danger" type="button">Cancel</button>
                 </div>
             </div>
     </div>

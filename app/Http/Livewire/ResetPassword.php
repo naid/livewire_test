@@ -40,7 +40,8 @@ class ResetPassword extends Component
         $user->password = Hash::make($this->password);
         $user->save();
 
-        $this->successMessage = "Password updated successfully.";        
+        $this->successMessage = "Password updated successfully." ;
+
     }
 
 }

@@ -58,6 +58,15 @@
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->first_name }} {{ Auth::user()->last_name }}
+                                    @role('super-admin')
+                                        (Super Admin)
+                                    @endrole
+                                    @role('admin')
+                                        (Admin)
+                                    @endrole
+                                    @role('moderator')
+                                        (Moderator)
+                                    @endrole
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">

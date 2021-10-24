@@ -80,14 +80,11 @@ class UserComponent extends Component
         ];
 
         foreach($imgArr as $ext) {
-            //$this->output .= " checking $ext, ";
             if ($data = @getimagesize($path.$ext)) {
                 $this->photoUploaded = $path.$ext;
                 return;
             }
         }
-
-        //$this->output = print_r($_SERVER, true);
     }
 
     public function savePhoto() 
@@ -98,16 +95,13 @@ class UserComponent extends Component
             'photo' => 'image|max:1024', // 1MB Max
         ]);
 
-        //$this->output = 'file ext:'.print_r($this->photo->extension(), true);
- 
         // /{user_id}/{file_name}
         $imageName = 'image.'.$file_ext;
 
-        
+        // get all file names
         $path = config('filesystems.disks.public.root').'/'.$user_id;
-        $files = glob("$path/*"); // get all file names
+        $files = glob("$path/*"); 
         
-        // $this->output = print_r($files, true);
 
         //delete all files first
         foreach($files as $file) { // iterate files
@@ -291,7 +285,7 @@ class UserComponent extends Component
         ]);
 
         //assign role as generic
-        $user->assignRole('generic user');
+        $user->assignRole('moderator');
 
         foreach($this->addresses as $a_index => $a_val) {
             $address = Address::create([
@@ -448,7 +442,9 @@ class UserComponent extends Component
     {
         if ($id) {
             $record = User::find($id);
+            $record->addresses()->delete();
             $record->addresses()->detach();
+            $record->contacts()->delete();
             $record->contacts()->detach();
             $record->delete();
         }

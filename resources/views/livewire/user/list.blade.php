@@ -49,7 +49,12 @@
 
                 <td>
                     <button wire:click="edit({{$row->id}})" class="btn btn-sm btn-warning py-0">Edit</button> | 
-                    <button wire:click="destroy({{$row->id}})" class="btn btn-sm btn-danger py-0">Delete</button>
+                    <button onclick="confirm('Are you sure you want to delete this user?') || event.stopImmediatePropagation()"
+                        wire:click="destroy({{$row->id}})"
+                        class="btn btn-sm btn-danger py-0"
+                    >
+                        Delete
+                    </button>
                 </td>
             </tr>
         @endforeach

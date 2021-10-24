@@ -86,7 +86,9 @@ REQUIRED: (to make uploaded images display properly)
 php artisan queue:table
 php artisan migrate
 
-php artisan make:job SendEmail
+>php artisan make:job SendEmail
+
+>php artisan queue:work
 
 >php artisan make:seeder RolesAndPermissionsSeeder 
 >php artisan db:seed --class=RolesAndPermissionsSeeder 
