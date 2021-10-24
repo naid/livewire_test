@@ -23,11 +23,13 @@ class HomeController extends Controller
      */
     public function index()
     {
+        //this contains the auto generated datatable
         return view('livewire.home');
     }
 
     public function users()
     {
+        //this contains the manuaaly created datatable
         return view('livewire.user');
     }
 }
