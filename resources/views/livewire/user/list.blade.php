@@ -1,5 +1,21 @@
-<div>
-    <div class="col-md-12">
+<div class="flex card col-lg-12">
+    <div class="card-body">
+    @if ($output != '')
+        <p class="alert alert-warning">{{ $output }}</p>
+    @endif
+    @if ($showList == TRUE)
+    <div class="flex">
+        <div class="flex flex-1">
+            <h3>Users</h3>
+        </div>
+        <div class="flex flex-1 justify-end">
+            <button wire:click.prevent="addUser()" class="btn btn-success">
+                Add User
+            </button>
+        </div>
+    </div>
+    
+    
     <table class="table table-striped" style="margin-top:20px;">
         <tr>
             @foreach($headers as $key => $value)
@@ -27,14 +43,16 @@
                 <td>{{$row->company_email}}</td> -->
 
                 <td>
-                    <button wire:click="edit({{$row->id}})" class="btn btn-sm btn-outline-danger py-0">Edit</button> | 
-                    <button wire:click="destroy({{$row->id}})" class="btn btn-sm btn-outline-danger py-0">Delete</button>
+                    <button wire:click="edit({{$row->id}})" class="btn btn-sm btn-warning py-0">Edit</button> | 
+                    <button wire:click="destroy({{$row->id}})" class="btn btn-sm btn-danger py-0">Delete</button>
                 </td>
             </tr>
         @endforeach
     </table>
     {{$data->links()}}
+    @endif
     </div>
+
     <div class="col-md-12">
     @if (count($errors) > 0)
         <div class="alert alert-danger">
@@ -48,12 +66,13 @@
         </div>
     @endif
 
-
-    @if($updateMode)
-        @include('livewire.user.update')
-    @else
-        @include('livewire.user.create')
-    @endif    
+    @if ($showList == FALSE)
+        @if($updateMode)
+            @include('livewire.user.update')
+        @else
+            @include('livewire.user.create')
+        @endif
+    @endif
     </div>
 
 </div> 

@@ -1,7 +1,8 @@
 <div class="flex">
     <div class="card flex-1 m-1">
         <div class="card-body">
-            <h3>Add User</h3>{{$output}}
+            <h3>Add User</h3>
+            OUTPUT: {{$output}}
             <div class="form-group">
                 <label for="exampleInputPassword1">First Name</label>
                 <input type="text" wire:model="first_name" class="form-control input-sm"  placeholder="first_name">
@@ -31,20 +32,35 @@
                 <input type="email" class="form-control input-sm" placeholder="Company email" wire:model="company_email">
             </div>
         </div>
-        <button wire:click="store()" class="btn btn-success">
-            Submit
-        </button>
+        <div class="flex justify-center m-1">
+            <div class="m-1">
+                <button wire:click="store()" class="btn btn-success">
+                    Submit
+                </button>
+            </div>
+            <div class="m-1">
+                <button wire:click="cancel()" class="btn btn-danger">
+                    Cancel
+                </button>
+            </div>
+        </div>
+        
     </div>
-
+    <!-- DYNAMIC ADDRESS -->
     <div class="flex-1 m-1">
         <div class="mt-3 mb-2">
-            <button wire:click.prevent="addAddress" class="btn btn-warning">
+            <button wire:click.prevent="addAddress()" class="btn btn-warning">
                 Add Address
             </button>
         </div>
         @foreach($addresses as $a_index => $a_val)
         <div class="card mt-1 mb-2">
             <div class="card-body">
+                <div class="flex justify-end">
+                    <button wire:click.prevent="removeAddress({{$a_index}})" class="btn btn-sm btn-danger">
+                        Remove Address
+                    </button>
+                </div>
                 <div class="flex">
                     <div class="form-group flex-1 m-1">
                         <label for="exampleInputPassword1">Address1</label>
@@ -73,4 +89,41 @@
         </div>
         @endforeach
     </div>
+
+
+    <!-- DYNAMIC CONTACT -->
+    <div class="flex-1 m-1">
+        <div class="mt-3 mb-2">
+            <button wire:click.prevent="addContact()" class="btn btn-warning">
+                Add Contact
+            </button>
+        </div>
+        @foreach($contacts as $a_index => $a_val)
+        <div class="card mt-1 mb-2">
+            <div class="card-body">
+                <div class="flex justify-end">
+                    <button wire:click.prevent="removeContact({{$a_index}})" class="btn btn-sm btn-danger">
+                        Remove Contact
+                    </button>
+                </div>
+                <div class="flex">
+                    <div class="form-group flex-1 m-1">
+                        <label for="exampleInputPassword1">Mobile Number</label>
+                        <input type="text" wire:model="mobile_number.{{$a_index}}" class="form-control input-sm"  placeholder="Mobile Number">
+                    </div>
+                    <div class="form-group flex-1 m-1">
+                        <label for="exampleInputPassword1">Work Number</label>
+                        <input type="text" wire:model="work_number.{{$a_index}}" class="form-control input-sm"  placeholder="Work Number">
+                    </div>
+                    <div class="form-group flex-1 m-1">
+                        <label for="exampleInputPassword1">Home Number</label>
+                        <input type="text" wire:model="home_number.{{$a_index}}" class="form-control input-sm"  placeholder="Home Number">
+                    </div>
+                </div>
+            </div>
+        </div>
+        @endforeach
+    </div>
+
+
 </div>

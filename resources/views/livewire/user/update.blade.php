@@ -25,14 +25,29 @@
                     <label for="exampleInputPassword1">Company Email</label>
                     <input type="email" class="form-control input-sm" placeholder="Company email" wire:model="company_email">
                 </div>
-                <button wire:click="update()" class="btn btn-warning">Update</button>
+
+                <div class="flex justify-center m-1">
+                    <div class="m-1">
+                        <button wire:click="update()" class="btn btn-warning">
+                            Update
+                        </button>
+                    </div>
+                    <div class="m-1">
+                        <button wire:click="cancel()" class="btn btn-danger">
+                            Cancel
+                        </button>
+                    </div>
+                </div>
+
             </div>
         </div>
 
         <div class="card col-md-4">
             <div class="card-body">
                 <h5 class="card-title">Address</h5>
-
+                @foreach($updateAddresses as $ind => $val)
+                {{$val->address1}}
+                @endforeach
                 
             </div>
         </div>

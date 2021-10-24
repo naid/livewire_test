@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use App\Models\User;
 use App\Models\Address;
+use App\Models\Contact;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -12,8 +13,11 @@ class UserComponent extends Component
     use WithPagination;
     public $addresses = [];
     public $contacts = [];
+    public $updateAddresses = [];
+    public $updateContacts = [];
     public $saved = FALSE;
-    public $output = "NO OUTPUT";
+    public $showList = TRUE;
+    public $output = '';
     //USER PORTION
     public
         $headers,
@@ -36,12 +40,12 @@ class UserComponent extends Component
         $work_number,
         $home_number;
 
-    public $updateMode = false;
+    public $updateMode = FALSE;
 
     private function headerConfig()
     {
         return [
-            'id' => 'I453554D',
+            'id' => 'ID',
             'first_name' => 'First Name',
             'last_name' => 'Last Name',
             'email' => 'Email',
@@ -55,15 +59,44 @@ class UserComponent extends Component
         $this->headers = $this->headerConfig();
     }
 
+    public function cancel()
+    {
+        $this->showList = TRUE;
+        $this->updateMode = FALSE;
+    }
+
+    public function addUser()
+    {
+        $this->showList = FALSE;
+        $this->updateMode = FALSE;
+    }
+
     public function addAddress()
     {
         $this->addresses[] = '';
     }
-    
+
+    public function addContact()
+    {
+        $this->contacts[] = '';
+    }
+
+    public function removeAddress($index)
+    {
+        unset($this->addresses[$index]);
+        //$this->addresses = array_values($this->addresses);
+    }
+
+    public function removeContact($index)
+    {
+        unset($this->contacts[$index]);
+        //$this->contacts = array_values($this->contacts);
+    }
+
     private function resultData()
     {
         //return User::all();
-        return User::where('id', '!=', auth()->user()->id)->paginate(5);
+        return User::where('id', '!=', auth()->user()->id)->paginate(10);
     }
 
     public function render()
@@ -83,16 +116,10 @@ class UserComponent extends Component
         $this->company_email = null;
     }
 
-    private function cancel()
-    {
-        $this->resetInput();
-        $this->updateMode = false;
-    }
-
     public function updated($key, $val)
     {
         $this->saved = FALSE;
-        $this->output = "UPDATING $key:$val=".print_r($this->addresses, true);
+        $this->output = "UPDATING $key:$val=".print_r($this->addresses, TRUE);
         foreach($this->addresses as $zind => $zval) {
             //$this->output .= print_r([$zind,$zval);
         }
@@ -100,7 +127,7 @@ class UserComponent extends Component
 
 
     public function store()
-    {$this->output = print_r($this->address1, true);
+    {$this->output = print_r($this->address1, TRUE);
         $this->validate([
             'first_name' => ['required', 'string', 'min:5', 'max:125'],
             'last_name' => ['required', 'string', 'min:5', 'max:125'],
@@ -109,6 +136,8 @@ class UserComponent extends Component
             'company_name' => ['nullable', 'string', 'min:5', 'max:125'],
             'company_email' => ['nullable', 'string', 'email', 'max:255'],
 
+
+
         ]);
 
         $user = User::create([
@@ -116,29 +145,41 @@ class UserComponent extends Component
             'last_name' => $this->last_name,
             'email' => $this->email,
             'password' => mt_rand(5, 15),
-            'company_name' => $this->company_name,
-            'company_email' => $this->company_email
+            'company_name' => $this->company_name ?? '',
+            'company_email' => $this->company_email ?? '',
         ]);
 
-        
         foreach($this->addresses as $a_index => $a_val) {
             $address = Address::create([
-                'address1' => $this->address1[$a_index],
-                'address2' => $this->address2[$a_index],
-                'suburb' => $this->suburb[$a_index],
-                'post_code' => $this->post_code[$a_index],
-                'city' => $this->city[$a_index]
+                'address1' => $this->address1[$a_index] ?? '',
+                'address2' => $this->address2[$a_index] ?? '',
+                'suburb' => $this->suburb[$a_index] ?? '',
+                'post_code' => $this->post_code[$a_index] ?? '',
+                'city' => $this->city[$a_index] ?? '',
             ]);
 
             $address->users()->save($user);
         }
 
-        $this->output .= "USER:ID CREATED: ".$user->id;
+        foreach($this->contacts as $a_index => $a_val) {
+            $contact = Contact::create([
+                'mobile_number' => $this->mobile_number[$a_index] ?? '',
+                'work_number' => $this->work_number[$a_index] ?? '',
+                'home_number' => $this->home_number[$a_index] ?? '',
+            ]);
+
+            $contact->users()->save($user);
+        }
+
+        $this->output .= 'USER ADDED. ('.$user->id.')';
+
+        $this->showList = TRUE;
 
         //$this->resetInput();
     }
     public function edit($id)
     {
+        $this->showList = FALSE;
         $record = User::findOrFail($id);
         $this->selected_id = $id;
         $this->first_name = $record->first_name;
@@ -148,8 +189,12 @@ class UserComponent extends Component
         $this->company_name = $record->company_name;
         $this->company_email = $record->company_email;
 
-        $this->updateMode = true;
+        $this->updateMode = TRUE;
+        $this->updateAddresses = $record->addresses;
+        $this->updateContacts = $record->contacts;
+        $this->output = 'GETTING CONTACTS:';
     }
+
     public function update()
     {
         $this->validate([
@@ -158,8 +203,8 @@ class UserComponent extends Component
             'last_name' => ['required', 'string', 'min:5', 'max:125'],
             'email' => ['required', 'string', 'email', 'max:255'],//, 'unique:users'
             // 'password' => ['required', 'string', 'min:8', 'confirmed'],
-            'company_name' => ['required', 'string', 'min:5', 'max:125'],
-            'company_email' => ['required', 'string', 'email', 'max:255'],
+            'company_name' => ['nullable', 'string', 'min:5', 'max:125'],
+            'company_email' => ['nullable', 'string', 'email', 'max:255'],
 
         ]);
         if ($this->selected_id) {
@@ -173,13 +218,17 @@ class UserComponent extends Component
                 'company_email' => $this->company_email
             ]);
             $this->resetInput();
-            $this->updateMode = false;
+            $this->updateMode = FALSE;
         }
+
+        $this->showList = TRUE;
     }
     public function destroy($id)
     {
         if ($id) {
-            $record = User::where('id', $id);
+            $record = User::find($id);
+            $record->addresses()->detach();
+            $record->contacts()->detach();
             $record->delete();
         }
     }
