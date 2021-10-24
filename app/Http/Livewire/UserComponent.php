@@ -6,15 +6,17 @@ use App\Models\User;
 use App\Models\Address;
 use App\Models\Contact;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 use Livewire\WithPagination;
 
 class UserComponent extends Component
 {
-    use WithPagination;
+    use WithPagination, WithFileUploads;
 
     public $showList = TRUE;
     public $output = '';
-    public $image;
+    public $photo;
+    public $photoUploaded;
 
     public $addresses = [];
     public $contacts = [];
@@ -63,11 +65,37 @@ class UserComponent extends Component
 
     public $updateMode = FALSE;
     
-    protected $listeners = ['fileUpload' => 'handleFileUpload'];
-
-    public function handleFileUpload($imageData)
+    public function readPhoto() 
     {
-        $this->image = $imageData;
+        $user_id = auth()->user()->id;
+        $path = config('filesystems.disks.local.root')."/$user_id/";
+        $files = glob($path."*.{jpg,jpeg,png,gif}", GLOB_BRACE);
+
+        $this->output = "No images were found here...";
+
+        if (!empty($files)) {
+            $this->output = print_r($files, true);
+            $this->photoUploaded = $files[0];
+        }
+        else {
+            $this->output = $path."=No images were found here.".print_r($files, true);
+        }
+
+//        $this->photoUploaded = "/$user_id/image";
+    }
+
+    public function savePhoto() 
+    {
+        $user_id = auth()->user()->id;
+        $file_ext = $this->photo->extension();
+        $this->validate([
+            'photo' => 'image|max:1024', // 1MB Max
+        ]);
+
+        $this->output = 'file ext:'.print_r($this->photo->extension(), true);
+ 
+        // /{user_id}/{file_name}
+        $this->photo->storeAs($user_id, 'image.'.$file_ext);
     }
 
     private function clearData()
@@ -141,6 +169,7 @@ class UserComponent extends Component
     public function mount()
     {
         $this->headers = $this->headerConfig();
+        $this->readPhoto();
         $this->clearData();
     }
 
@@ -284,6 +313,7 @@ class UserComponent extends Component
     public function edit($id)
     {
         $this->output = "";
+        $this->readPhoto();
 
         $this->showList = FALSE;
         $record = User::findOrFail($id);

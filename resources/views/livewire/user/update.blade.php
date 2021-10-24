@@ -3,12 +3,19 @@
             <div class="card-body">
             <h3>Update User</h3>
                 <input type="hidden" wire:model="selected_id">
-                <section>
-                    @if($image)
-                    <img src="{{$image}}" >
-                    @endif
-                    <input type="file" id="image" wire:change="$emit('imageChosen')">
-                <section>
+                <div class="flex justify-center m-2">
+                    <form wire:submit.prevent="savePhoto">
+                        @if ($photoUploaded)
+                            <img src="{{ $photoUploaded }}">
+                        @endif
+                        <input type="file" wire:model="photo">
+                    
+                        @error('photo') <span class="error">{{ $message }}</span> @enderror
+                        @if ($photo)
+                            <button type="submit" class="btn btn-sm btn-success">Save Photo</button>
+                        @endif
+                    </form>
+                </div>
                 <div class="form-group">
                     <label for="exampleInputPassword1">First Name</label>
                     <input type="text" wire:model="first_name" class="form-control input-sm"  placeholder="first_name">
@@ -57,7 +64,7 @@
             <div class="card-body">
                 <div class="flex justify-end">
                     <button wire:click.prevent="removeAddress({{$a_index}})" class="btn btn-sm btn-danger">
-                        <i class="bi bi-trash">Remove new</i>
+                        <i class="bi bi-trash">Remove</i>
                     </button>
                 </div>
                 <div class="flex">
@@ -93,7 +100,7 @@
             <div class="card-body">
                 <div class="flex justify-end">
                     <button wire:click.prevent="removeExistingAddress({{$a_val->id}})" class="btn btn-sm btn-danger">
-                        Remove old
+                        <i class="bi bi-trash">Remove</i>
                     </button>
                     <input type="hidden" wire:model="ua_address_id.{{$a_val->id}}">
                 </div>
@@ -146,7 +153,7 @@
     <div class="flex-1 m-1">
         <div class="mt-3 mb-2">
             <button wire:click.prevent="addContact()" class="btn btn-success">
-                Add Contact newd
+                Add Contact
             </button>
         </div>
         @foreach($contacts as $a_index => $a_val)
@@ -154,7 +161,7 @@
             <div class="card-body">
                 <div class="flex justify-end">
                     <button wire:click.prevent="removeContact({{$a_index}})" class="btn btn-sm btn-danger">
-                        Remove
+                        <i class="bi bi-trash">Remove</i>
                     </button>
                 </div>
                 <div class="flex">
@@ -180,7 +187,7 @@
             <div class="card-body">
                 <div class="flex justify-end">
                     <button wire:click.prevent="removeExistingContact({{$a_val->id}})" class="btn btn-sm btn-danger">
-                        Remove oldd
+                        <i class="bi bi-trash">Remove</i>
                     </button>
                     <input type="hidden" wire:model="uc_contact_id.{{$a_val->id}}">
                 </div>
