@@ -3,6 +3,12 @@
             <div class="card-body">
             <h3>Update User</h3>
                 <input type="hidden" wire:model="selected_id">
+                <section>
+                    @if($image)
+                    <img src="{{$image}}" >
+                    @endif
+                    <input type="file" id="image" wire:change="$emit('imageChosen')">
+                <section>
                 <div class="form-group">
                     <label for="exampleInputPassword1">First Name</label>
                     <input type="text" wire:model="first_name" class="form-control input-sm"  placeholder="first_name">
@@ -197,3 +203,16 @@
         @endforeach
     </div>
 </div>
+
+<script>
+    window.livewire.on('imageChosen', () => {
+        let inputField = document.getElementById('image');
+        let file = inputField.files[0];
+        let reader = new FileReader();
+        reader.onloadend = () => {
+            window.livewire.emit('fileUpload', reader.result);
+        };
+
+        reader.readAsDataURL(file);
+    });
+</script>

@@ -11,12 +11,16 @@ use Livewire\WithPagination;
 class UserComponent extends Component
 {
     use WithPagination;
+
+    public $showList = TRUE;
+    public $output = '';
+    public $image;
+
     public $addresses = [];
     public $contacts = [];
     public $updateAddresses = [];
     public $updateContacts = [];
-    public $showList = TRUE;
-    public $output = '';
+
     public $outputStatus = 'success';
     
     //USER PORTION
@@ -58,29 +62,12 @@ class UserComponent extends Component
         $uc_home_number;
 
     public $updateMode = FALSE;
+    
+    protected $listeners = ['fileUpload' => 'handleFileUpload'];
 
-    private function headerConfig()
+    public function handleFileUpload($imageData)
     {
-        return [
-            'id' => 'ID',
-            'first_name' => 'First Name',
-            'last_name' => 'Last Name',
-            'email' => 'Email',
-            'company_name' => 'Company Name',
-            'company_email' => 'Company Email',
-        ];
-    }
-
-    public function mount()
-    {
-        $this->headers = $this->headerConfig();
-        $this->clearData();
-    }
-
-    public function cancel()
-    {
-        $this->showList = TRUE;
-        $this->updateMode = FALSE;
+        $this->image = $imageData;
     }
 
     private function clearData()
@@ -96,6 +83,18 @@ class UserComponent extends Component
         $this->updateContacts = [];
 
         $this->resetInput();
+    }
+
+    private function headerConfig()
+    {
+        return [
+            'id' => 'ID',
+            'first_name' => 'First Name',
+            'last_name' => 'Last Name',
+            'email' => 'Email',
+            'company_name' => 'Company Name',
+            'company_email' => 'Company Email',
+        ];
     }
 
     private function resetInput()
@@ -130,6 +129,25 @@ class UserComponent extends Component
         unset($this->uc_mobile_number);
         unset($this->uc_work_number);
         unset($this->uc_home_number);
+    }
+
+    private function resultData()
+    {
+        //return User::all();
+        //return User::where('id', '!=', auth()->user()->id)->paginate(10);
+        return User::paginate(10);
+    }
+
+    public function mount()
+    {
+        $this->headers = $this->headerConfig();
+        $this->clearData();
+    }
+
+    public function cancel()
+    {
+        $this->showList = TRUE;
+        $this->updateMode = FALSE;
     }
 
     public function addUser()
@@ -194,14 +212,6 @@ class UserComponent extends Component
 
         $this->output = "Contact Removed.";
         $this->outputStatus = "success";
-    }
-
-
-    private function resultData()
-    {
-        //return User::all();
-        //return User::where('id', '!=', auth()->user()->id)->paginate(10);
-        return User::paginate(10);
     }
 
     public function render()
