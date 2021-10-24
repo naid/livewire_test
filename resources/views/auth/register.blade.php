@@ -79,7 +79,7 @@
                             <label for="company_name" class="col-md-4 col-form-label text-md-right">{{ __('Company Name') }}</label>
 
                             <div class="col-md-6">
-                                <input id="company_name" type="text" class="form-control @error('company_name') is-invalid @enderror" name="company_name" value="{{ old('company_name') }}" required autocomplete="company_name" autofocus>
+                                <input id="company_name" type="text" class="form-control @error('company_name') is-invalid @enderror" name="company_name" value="{{ old('company_name') }}" autocomplete="company_name" autofocus>
 
                                 @error('company_name')
                                     <span class="invalid-feedback" role="alert">
@@ -93,7 +93,7 @@
                             <label for="company_email" class="col-md-4 col-form-label text-md-right">{{ __('Company E-Mail Address') }}</label>
 
                             <div class="col-md-6">
-                                <input id="company_email" type="email" class="form-control @error('company_email') is-invalid @enderror" name="company_email" value="{{ old('company_email') }}" required autocomplete="company_email">
+                                <input id="company_email" type="email" class="form-control @error('company_email') is-invalid @enderror" name="company_email" value="{{ old('company_email') }}" autocomplete="company_email">
 
                                 @error('company_email')
                                     <span class="invalid-feedback" role="alert">

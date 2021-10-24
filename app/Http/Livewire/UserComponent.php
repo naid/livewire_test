@@ -364,12 +364,12 @@ class UserComponent extends Component
     {
         $this->validate([
             'selected_id' => 'required|numeric',
-            'first_name' => ['required', 'string', 'min:5', 'max:125'],
-            'last_name' => ['required', 'string', 'min:5', 'max:125'],
-            'email' => ['required', 'string', 'email', 'max:255'],//, 'unique:users'
+            'first_name' => ['required', 'string', 'max:125'],
+            'last_name' => ['required', 'string', 'max:125'],
+            'email' => ['required', 'string', 'email', 'max:125'],//, 'unique:users'
             // 'password' => ['required', 'string', 'min:8', 'confirmed'],
-            'company_name' => ['nullable', 'string', 'min:5', 'max:125'],
-            'company_email' => ['nullable', 'string', 'email', 'max:255'],
+            'company_name' => ['nullable', 'string', 'max:125'],
+            'company_email' => ['nullable', 'string', 'email', 'max:125'],
 
         ]);
         if ($this->selected_id) {

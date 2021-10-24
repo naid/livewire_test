@@ -1,0 +1,10 @@
+->changes in Livewire and Laravel8
+
+Route::livewire('/', 'home'); //won't work in Laravel 8
+Route::get('/' , 'App\Http\Controllers\HomeController@index');
+
+
+->Turboliinks not fully supported in LivewireV2
+    -can only attain SPA-esque experience
+
+->most of the tutorials doesn't use Laravel 8
