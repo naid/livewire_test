@@ -70,5 +70,8 @@ DATATABLES:
 >php artisan make:migration modify_contacts_table --table=contacts
 
 
-php artisan make:migration create_addressables_table
-php artisan make:migration create_contactables_table
+>php artisan make:migration create_addressables_table
+>php artisan make:migration create_contactables_table
+
+RUN SCHEDULER on DEV MACHINE
+>php artisan schedule:work

@@ -25,6 +25,10 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         // $schedule->command('inspire')->hourly();
+        $schedule->call(function () {
+            \Spatie\Activitylog\Models\Activity::whereDate('created_at', '<=', now()->subDays(7))->delete();
+        })->everyFourMinutes();
+        
     }
 
     /**
