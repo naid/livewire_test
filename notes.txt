@@ -48,6 +48,7 @@ $table->renameColumn('name', 'first_name');
 >php artisan vendor:publish --provider="Spatie\Activitylog\ActivitylogServiceProvider" --tag="config"
 
 PROBLEM ENCOUNTERED:
+on https://spatie.be/docs/laravel-activitylog/v4/installation-and-setup
 >php artisan vendor:publish --provider="Spatie\Activitylog\ActivitylogServiceProvider" --tag="activitylog-migrations"
 >php artisan vendor:publish --provider="Spatie\Activitylog\ActivitylogServiceProvider" --tag="activitylog-config"
 should be :
