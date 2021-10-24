@@ -73,6 +73,7 @@ class UserComponent extends Component
     public function mount()
     {
         $this->headers = $this->headerConfig();
+        $this->clearData();
     }
 
     public function cancel()
@@ -81,7 +82,7 @@ class UserComponent extends Component
         $this->updateMode = FALSE;
     }
 
-    public function addUser()
+    private function clearData()
     {
         unset($this->addresses);
         unset($this->contacts);
@@ -93,7 +94,45 @@ class UserComponent extends Component
         $this->updateAddresses = [];
         $this->updateContacts = [];
 
+        $this->resetInput();
+    }
 
+    private function resetInput()
+    {
+        $this->first_name = null;
+        $this->last_name = null;
+        $this->email = null;
+        // $this->password = null;
+        $this->company_name = null;
+        $this->company_email = null;
+
+        unset($this->address_id);
+        unset($this->address1);
+        unset($this->address2);
+        unset($this->suburb);
+        unset($this->post_code);
+        unset($this->city);
+
+        unset($this->contact_id);
+        unset($this->mobile_number);
+        unset($this->work_number);
+        unset($this->home_number);
+
+        unset($this->ua_address_id);
+        unset($this->ua_address1);
+        unset($this->ua_address2);
+        unset($this->ua_suburb);
+        unset($this->ua_post_code);
+        unset($this->ua_city);
+
+        unset($this->uc_contact_id);
+        unset($this->uc_mobile_number);
+        unset($this->uc_work_number);
+        unset($this->uc_home_number);
+    }
+
+    public function addUser()
+    {
         $this->showList = FALSE;
         $this->updateMode = FALSE;
     }
@@ -163,16 +202,6 @@ class UserComponent extends Component
         ]);
     }
 
-    private function resetInput()
-    {
-        $this->first_name = null;
-        $this->last_name = null;
-        $this->email = null;
-        // $this->password = null;
-        $this->company_name = null;
-        $this->company_email = null;
-    }
-
     public function updated($key, $val)
     {
         $this->saved = FALSE;
@@ -229,7 +258,7 @@ class UserComponent extends Component
 
         $this->showList = TRUE;
 
-        //$this->resetInput();
+        $this->clearData();
     }
     public function edit($id)
     {
@@ -283,8 +312,8 @@ class UserComponent extends Component
 
         ]);
         if ($this->selected_id) {
-            $record = User::find($this->selected_id);
-            $record->update([
+            $user = User::find($this->selected_id);
+            $user->update([
                 'first_name' => $this->first_name,
                 'last_name' => $this->last_name,
                 'email' => $this->email,
@@ -292,10 +321,56 @@ class UserComponent extends Component
                 'company_name' => $this->company_name,
                 'company_email' => $this->company_email
             ]);
-            $this->resetInput();
+
+            //ADD NEW ADDRESSES
+            foreach($this->addresses as $a_index => $a_val) {
+                $address = Address::create([
+                    'address1' => $this->address1[$a_index] ?? '',
+                    'address2' => $this->address2[$a_index] ?? '',
+                    'suburb' => $this->suburb[$a_index] ?? '',
+                    'post_code' => $this->post_code[$a_index] ?? '',
+                    'city' => $this->city[$a_index] ?? '',
+                ]);
+    
+                $address->users()->save($user);
+            }
+    
+            //ADD NEW CONTACTS
+            foreach($this->contacts as $a_index => $a_val) {
+                $contact = Contact::create([
+                    'mobile_number' => $this->mobile_number[$a_index] ?? '',
+                    'work_number' => $this->work_number[$a_index] ?? '',
+                    'home_number' => $this->home_number[$a_index] ?? '',
+                ]);
+    
+                $contact->users()->save($user);
+            }
+
+            //UPDATE ADDRESSES
+            foreach($this->updateAddresses as $a_index => $a_val) {
+                $address = Address::find($this->ua_address_id[$a_val->id]);
+                $address->update([
+                    'address1' => $this->ua_address1[$a_val->id] ?? '',
+                    'address2' => $this->ua_address2[$a_val->id] ?? '',
+                    'suburb' => $this->ua_suburb[$a_val->id] ?? '',
+                    'post_code' => $this->ua_post_code[$a_val->id] ?? '',
+                    'city' => $this->ua_city[$a_val->id] ?? '',
+                ]);
+            }
+    
+            //UPDATE CONTACTS
+            foreach($this->updateContacts as $a_index => $a_val) {
+                $contact = Contact::find($this->uc_contact_id[$a_val->id]);
+                $contact->update([
+                    'mobile_number' => $this->uc_mobile_number[$a_val->id] ?? '',
+                    'work_number' => $this->uc_work_number[$a_val->id] ?? '',
+                    'home_number' => $this->uc_home_number[$a_val->id] ?? '',
+                ]);
+            }
+
             $this->updateMode = FALSE;
         }
-
+        $this->clearData();
         $this->showList = TRUE;
     }
 

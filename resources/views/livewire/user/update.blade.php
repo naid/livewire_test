@@ -51,7 +51,7 @@
             <div class="card-body">
                 <div class="flex justify-end">
                     <button wire:click.prevent="removeAddress({{$a_index}})" class="btn btn-sm btn-danger">
-                        <i class="bi bi-trash">Remove</i>
+                        <i class="bi bi-trash">Remove new</i>
                     </button>
                 </div>
                 <div class="flex">
@@ -87,7 +87,7 @@
             <div class="card-body">
                 <div class="flex justify-end">
                     <button wire:click.prevent="removeExistingAddress({{$a_val->id}})" class="btn btn-sm btn-danger">
-                        Remove
+                        Remove old
                     </button>
                     <input type="hidden" wire:model="ua_address_id.{{$a_val->id}}">
                 </div>
@@ -140,7 +140,7 @@
     <div class="flex-1 m-1">
         <div class="mt-3 mb-2">
             <button wire:click.prevent="addContact()" class="btn btn-success">
-                Add Contact
+                Add Contact newd
             </button>
         </div>
         @foreach($contacts as $a_index => $a_val)
@@ -174,7 +174,7 @@
             <div class="card-body">
                 <div class="flex justify-end">
                     <button wire:click.prevent="removeExistingContact({{$a_val->id}})" class="btn btn-sm btn-danger">
-                        Remove
+                        Remove oldd
                     </button>
                     <input type="hidden" wire:model="uc_contact_id.{{$a_val->id}}">
                 </div>
