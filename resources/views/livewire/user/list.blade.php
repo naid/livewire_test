@@ -1,7 +1,7 @@
 <div class="flex card col-lg-12">
     <div class="card-body">
     @if ($output != '')
-        <p class="alert alert-warning">{{ $output }}</p>
+        <p class="alert alert-{{ $outputStatus }}">{{ $output }}</p>
     @endif
     @if ($showList == TRUE)
     <div class="flex">
@@ -33,7 +33,12 @@
         @foreach($data as $row)
             <tr>
                 @foreach($headers as $key => $value)
-                    <td>{{$row->$key}}</td>
+                    @if(in_array($key, ['id', 'email']))
+                        <td><button wire:click="edit({{$row->id}})" class="btn btn-sm btn-link py-0">{{$row->$key}}</button></td>
+                    @else
+                        <td>{{$row->$key}}</td>
+                    @endif
+                    
                 @endforeach
                 <!-- <td>{{$loop->index + 1}}) {{$row->id}}</td>
                 <td>{{$row->first_name}}</td>

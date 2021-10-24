@@ -15,9 +15,10 @@ class UserComponent extends Component
     public $contacts = [];
     public $updateAddresses = [];
     public $updateContacts = [];
-    public $saved = FALSE;
     public $showList = TRUE;
     public $output = '';
+    public $outputStatus = 'success';
+    
     //USER PORTION
     public
         $headers,
@@ -133,6 +134,9 @@ class UserComponent extends Component
 
     public function addUser()
     {
+        $this->output = "";
+
+        $this->clearData();
         $this->showList = FALSE;
         $this->updateMode = FALSE;
     }
@@ -161,8 +165,6 @@ class UserComponent extends Component
 
     public function removeExistingAddress($index)
     {
-        
-        $this->output = "Removing Address: $index";
         $address = ADDRESS::findOrFail($index);
         $address->users()->detach();
         $address->delete();
@@ -172,6 +174,9 @@ class UserComponent extends Component
                 unset($this->updateAddresses[$ind]);
             }
         }
+
+        $this->output = "Address Removed.";
+        $this->outputStatus = "success";
     }
 
     public function removeExistingContact($index)
@@ -186,6 +191,9 @@ class UserComponent extends Component
                 unset($this->updateContacts[$ind]);
             }
         }
+
+        $this->output = "Contact Removed.";
+        $this->outputStatus = "success";
     }
 
 
@@ -200,15 +208,16 @@ class UserComponent extends Component
         return view('livewire.user.list', [
             'data' => $this->resultData()
         ]);
+
+        $this->output = "";
     }
 
     public function updated($key, $val)
     {
-        $this->saved = FALSE;
-        $this->output = "UPDATING $key:$val=".print_r($this->addresses, TRUE);
-        foreach($this->addresses as $zind => $zval) {
-            //$this->output .= print_r([$zind,$zval);
-        }
+        // $this->output = "UPDATING $key:$val=".print_r($this->addresses, TRUE);
+        // foreach($this->addresses as $zind => $zval) {
+        //     //$this->output .= print_r([$zind,$zval);
+        // }
     }
 
 
@@ -254,14 +263,17 @@ class UserComponent extends Component
             $contact->users()->save($user);
         }
 
-        $this->output .= 'USER ADDED. ('.$user->id.')';
-
         $this->showList = TRUE;
-
         $this->clearData();
+
+        $this->output = "User Added.";
+        $this->outputStatus = "success";
     }
+
     public function edit($id)
     {
+        $this->output = "";
+
         $this->showList = FALSE;
         $record = User::findOrFail($id);
         $this->selected_id = $id;
@@ -275,7 +287,6 @@ class UserComponent extends Component
         $this->updateMode = TRUE;
         $this->updateAddresses = $record->addresses;
         $this->updateContacts = $record->contacts;
-        $this->output = 'GETTING CONTACTS:';
 
         //Get Address DATA to bind to data on frontend
         foreach($record->addresses as $a_index => $a_val) {
@@ -372,6 +383,9 @@ class UserComponent extends Component
         }
         $this->clearData();
         $this->showList = TRUE;
+
+        $this->output = 'User Updated.';
+        $this->outputStatus = 'success';
     }
 
     public function destroy($id)
@@ -382,5 +396,8 @@ class UserComponent extends Component
             $record->contacts()->detach();
             $record->delete();
         }
+
+        $this->output = 'User Deleted.';
+        $this->outputStatus = 'success';
     }
 }
