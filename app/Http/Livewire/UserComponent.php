@@ -65,37 +65,58 @@ class UserComponent extends Component
 
     public $updateMode = FALSE;
     
-    public function readPhoto() 
+    public function readPhoto($id) 
     {
-        $user_id = auth()->user()->id;
-        $path = config('filesystems.disks.local.root')."/$user_id/";
-        $files = glob($path."*.{jpg,jpeg,png,gif}", GLOB_BRACE);
+        $user_id = $id;
+        $path = 'http://'.$_SERVER['HTTP_HOST']."/storage/$user_id/image";
 
-        $this->output = "No images were found here...";
+        $imgArr = [
+            '.jpg',
+            '.jpeg',
+            '.png',
+            '.gif',
+        ];
 
-        if (!empty($files)) {
-            $this->output = print_r($files, true);
-            $this->photoUploaded = $files[0];
+        foreach($imgArr as $ext) {
+            //$this->output .= " checking $ext, ";
+            if ($data = @getimagesize($path.$ext)) {
+                $this->photoUploaded = $path.$ext;
+                return;
+            }
         }
-        else {
-            $this->output = $path."=No images were found here.".print_r($files, true);
-        }
 
-//        $this->photoUploaded = "/$user_id/image";
+        //$this->output = print_r($_SERVER, true);
     }
 
     public function savePhoto() 
     {
-        $user_id = auth()->user()->id;
+        $user_id = $this->selected_id;
         $file_ext = $this->photo->extension();
         $this->validate([
             'photo' => 'image|max:1024', // 1MB Max
         ]);
 
-        $this->output = 'file ext:'.print_r($this->photo->extension(), true);
+        //$this->output = 'file ext:'.print_r($this->photo->extension(), true);
  
         // /{user_id}/{file_name}
-        $this->photo->storeAs($user_id, 'image.'.$file_ext);
+        $imageName = 'image.'.$file_ext;
+
+        
+        $path = config('filesystems.disks.public.root').'/'.$user_id;
+        $files = glob("$path/*"); // get all file names
+        
+        // $this->output = print_r($files, true);
+
+        //delete all files first
+        foreach($files as $file) { // iterate files
+            if(is_file($file)) {
+                unlink($file); // delete file
+            }   
+        }
+
+        //SAVE NEW IMAGE FILE
+        $this->photo->storeAs("public/$user_id", $imageName);
+
     }
 
     private function clearData()
@@ -169,7 +190,6 @@ class UserComponent extends Component
     public function mount()
     {
         $this->headers = $this->headerConfig();
-        $this->readPhoto();
         $this->clearData();
     }
 
@@ -313,7 +333,7 @@ class UserComponent extends Component
     public function edit($id)
     {
         $this->output = "";
-        $this->readPhoto();
+        $this->readPhoto($id);
 
         $this->showList = FALSE;
         $record = User::findOrFail($id);

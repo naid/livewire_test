@@ -5,7 +5,9 @@
                 <input type="hidden" wire:model="selected_id">
                 <div class="flex justify-center m-2">
                     <form wire:submit.prevent="savePhoto">
-                        @if ($photoUploaded)
+                        @if ($photo)
+                            <img src="{{ $photo->temporaryUrl() }}">
+                        @elseif ($photoUploaded)
                             <img src="{{ $photoUploaded }}">
                         @endif
                         <input type="file" wire:model="photo">

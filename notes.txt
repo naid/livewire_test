@@ -75,3 +75,6 @@ DATATABLES:
 
 RUN SCHEDULER on DEV MACHINE
 >php artisan schedule:work
+
+REQUIRED: (to make uploaded images display properly)
+php artisan storage:link
