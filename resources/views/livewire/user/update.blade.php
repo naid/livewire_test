@@ -51,7 +51,7 @@
             <div class="card-body">
                 <div class="flex justify-end">
                     <button wire:click.prevent="removeAddress({{$a_index}})" class="btn btn-sm btn-danger">
-                        <i class="bi bi-trash"></i>
+                        <i class="bi bi-trash">Remove</i>
                     </button>
                 </div>
                 <div class="flex">
@@ -87,7 +87,7 @@
             <div class="card-body">
                 <div class="flex justify-end">
                     <button wire:click.prevent="removeExistingAddress({{$a_val->id}})" class="btn btn-sm btn-danger">
-                        Remove Address
+                        Remove
                     </button>
                     <input type="hidden" wire:model="ua_address_id.{{$a_val->id}}">
                 </div>
@@ -148,7 +148,7 @@
             <div class="card-body">
                 <div class="flex justify-end">
                     <button wire:click.prevent="removeContact({{$a_index}})" class="btn btn-sm btn-danger">
-                        Remove Contact
+                        Remove
                     </button>
                 </div>
                 <div class="flex">
@@ -174,7 +174,7 @@
             <div class="card-body">
                 <div class="flex justify-end">
                     <button wire:click.prevent="removeExistingContact({{$a_val->id}})" class="btn btn-sm btn-danger">
-                        Remove Contact
+                        Remove
                     </button>
                     <input type="hidden" wire:model="uc_contact_id.{{$a_val->id}}">
                 </div>

@@ -83,6 +83,17 @@ class UserComponent extends Component
 
     public function addUser()
     {
+        unset($this->addresses);
+        unset($this->contacts);
+        unset($this->updateAddresses);
+        unset($this->updateContacts);
+
+        $this->addresses = [];
+        $this->contacts = [];
+        $this->updateAddresses = [];
+        $this->updateContacts = [];
+
+
         $this->showList = FALSE;
         $this->updateMode = FALSE;
     }
@@ -108,6 +119,36 @@ class UserComponent extends Component
         unset($this->contacts[$index]);
         //$this->contacts = array_values($this->contacts);
     }
+
+    public function removeExistingAddress($index)
+    {
+        
+        $this->output = "Removing Address: $index";
+        $address = ADDRESS::findOrFail($index);
+        $address->users()->detach();
+        $address->delete();
+
+        foreach($this->updateAddresses as $ind => $val) {
+            if($val->id == $index) {
+                unset($this->updateAddresses[$ind]);
+            }
+        }
+    }
+
+    public function removeExistingContact($index)
+    {
+        $this->output = "Removing Contact: $index";
+        $contact = CONTACT::findOrFail($index);
+        $contact->users()->detach();
+        $contact->delete();
+
+        foreach($this->updateContacts as $ind => $val) {
+            if($val->id == $index) {
+                unset($this->updateContacts[$ind]);
+            }
+        }
+    }
+
 
     private function resultData()
     {
@@ -151,9 +192,6 @@ class UserComponent extends Component
             // 'password' => ['required', 'string', 'min:8', 'confirmed'],
             'company_name' => ['nullable', 'string', 'min:5', 'max:125'],
             'company_email' => ['nullable', 'string', 'email', 'max:255'],
-
-
-
         ]);
 
         $user = User::create([
@@ -211,7 +249,8 @@ class UserComponent extends Component
         $this->output = 'GETTING CONTACTS:';
 
         //Get Address DATA to bind to data on frontend
-        foreach($this->updateAddresses as $a_index => $a_val) {
+        foreach($record->addresses as $a_index => $a_val) {
+            //$this->updateAddresses[$a_val->id] = $a_val;
             $this->ua_address_id[$a_val->id] = $a_val->id;
             $this->ua_address1[$a_val->id] = $a_val->address1;
             $this->ua_address2[$a_val->id] = $a_val->address2;
@@ -221,7 +260,8 @@ class UserComponent extends Component
         }
 
         //Get Contacts DATA to bind to data on frontend
-        foreach($this->updateContacts as $a_index => $a_val) {
+        foreach($record->contacts as $a_index => $a_val) {
+            //$this->updateContacts[$a_val->id] = $a_val;
             $this->uc_contact_id[$a_val->id] = $a_val->id;
             $this->uc_mobile_number[$a_val->id] = $a_val->mobile_number;
             $this->uc_work_number[$a_val->id] = $a_val->work_number;

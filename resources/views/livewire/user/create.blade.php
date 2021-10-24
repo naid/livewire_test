@@ -58,7 +58,7 @@
             <div class="card-body">
                 <div class="flex justify-end">
                     <button wire:click.prevent="removeAddress({{$a_index}})" class="btn btn-sm btn-danger">
-                        Remove Address
+                        Remove
                     </button>
                 </div>
                 <div class="flex">
@@ -103,7 +103,7 @@
             <div class="card-body">
                 <div class="flex justify-end">
                     <button wire:click.prevent="removeContact({{$a_index}})" class="btn btn-sm btn-danger">
-                        Remove Contact
+                        Remove
                     </button>
                 </div>
                 <div class="flex">
