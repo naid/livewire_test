@@ -93,14 +93,17 @@ php artisan migrate
 >php artisan make:seeder RolesAndPermissionsSeeder 
 >php artisan db:seed --class=RolesAndPermissionsSeeder 
 
-
-need to run
+After extracting the archive,
+NEED TO RUN:
 >npm install
 >composer update
 >npm run dev
 >php artisan db:seed --class=UserSeeder
 >php artisan db:seed --class=RolesAndPermissionsSeeder 
-then register on the page to login
+>php artisan optimize:clear
+>php artisan storage:link
+
+Then register on the page to login
 
 TO ADD user to role 
 >php artisan tinker

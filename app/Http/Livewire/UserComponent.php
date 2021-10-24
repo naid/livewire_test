@@ -69,6 +69,9 @@ class UserComponent extends Component
     
     public function readPhoto($id) 
     {
+        $this->photoUploaded = '';
+        $this->photo = '';
+        
         $user_id = $id;
         $path = 'http://'.$_SERVER['HTTP_HOST']."/storage/$user_id/image";
 
@@ -112,6 +115,7 @@ class UserComponent extends Component
 
         //SAVE NEW IMAGE FILE
         $this->photo->storeAs("public/$user_id", $imageName);
+        $this->output = "File uploaded.";
 
     }
 
@@ -324,6 +328,7 @@ class UserComponent extends Component
     public function edit($id)
     {
         $this->output = "";
+
         $this->readPhoto($id);
 
         $this->showList = FALSE;
