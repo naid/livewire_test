@@ -8,6 +8,8 @@ use App\Models\Contact;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Livewire\WithPagination;
+use Carbon\Carbon;
+use App\Jobs\SendEmail;
 
 class UserComponent extends Component
 {
@@ -182,8 +184,6 @@ class UserComponent extends Component
 
     private function resultData()
     {
-        //return User::all();
-        //return User::where('id', '!=', auth()->user()->id)->paginate(10);
         return User::paginate(10);
     }
 
@@ -221,13 +221,11 @@ class UserComponent extends Component
     public function removeAddress($index)
     {
         unset($this->addresses[$index]);
-        //$this->addresses = array_values($this->addresses);
     }
 
     public function removeContact($index)
     {
         unset($this->contacts[$index]);
-        //$this->contacts = array_values($this->contacts);
     }
 
     public function removeExistingAddress($index)
@@ -272,17 +270,8 @@ class UserComponent extends Component
         $this->output = "";
     }
 
-    public function updated($key, $val)
-    {
-        // $this->output = "UPDATING $key:$val=".print_r($this->addresses, TRUE);
-        // foreach($this->addresses as $zind => $zval) {
-        //     //$this->output .= print_r([$zind,$zval);
-        // }
-    }
-
-
     public function store()
-    {$this->output = print_r($this->address1, TRUE);
+    {
         $this->validate([
             'first_name' => ['required', 'string', 'min:5', 'max:125'],
             'last_name' => ['required', 'string', 'min:5', 'max:125'],
@@ -300,6 +289,9 @@ class UserComponent extends Component
             'company_name' => $this->company_name ?? '',
             'company_email' => $this->company_email ?? '',
         ]);
+
+        //assign role as generic
+        $user->assignRole('generic user');
 
         foreach($this->addresses as $a_index => $a_val) {
             $address = Address::create([
@@ -323,6 +315,11 @@ class UserComponent extends Component
             $contact->users()->save($user);
         }
 
+        //SEND EMAIL
+        $details = ['email' => $this->email];
+        $emailJob = (new SendEmail($details))->delay(Carbon::now()->addMinutes(5));
+        dispatch($emailJob);
+
         $this->showList = TRUE;
         $this->clearData();
 
@@ -341,7 +338,7 @@ class UserComponent extends Component
         $this->first_name = $record->first_name;
         $this->last_name = $record->last_name;
         $this->email = $record->email;
-        // $this->password = $record->password;
+
         $this->company_name = $record->company_name;
         $this->company_email = $record->company_email;
 
@@ -351,7 +348,6 @@ class UserComponent extends Component
 
         //Get Address DATA to bind to data on frontend
         foreach($record->addresses as $a_index => $a_val) {
-            //$this->updateAddresses[$a_val->id] = $a_val;
             $this->ua_address_id[$a_val->id] = $a_val->id;
             $this->ua_address1[$a_val->id] = $a_val->address1;
             $this->ua_address2[$a_val->id] = $a_val->address2;
@@ -362,7 +358,6 @@ class UserComponent extends Component
 
         //Get Contacts DATA to bind to data on frontend
         foreach($record->contacts as $a_index => $a_val) {
-            //$this->updateContacts[$a_val->id] = $a_val;
             $this->uc_contact_id[$a_val->id] = $a_val->id;
             $this->uc_mobile_number[$a_val->id] = $a_val->mobile_number;
             $this->uc_work_number[$a_val->id] = $a_val->work_number;

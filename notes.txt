@@ -77,4 +77,16 @@ RUN SCHEDULER on DEV MACHINE
 >php artisan schedule:work
 
 REQUIRED: (to make uploaded images display properly)
-php artisan storage:link
+>php artisan storage:link
+
+
+>php artisan make:mail NewUserNotification
+
+
+php artisan queue:table
+php artisan migrate
+
+php artisan make:job SendEmail
+
+>php artisan make:seeder RolesAndPermissionsSeeder 
+>php artisan db:seed --class=RolesAndPermissionsSeeder 
