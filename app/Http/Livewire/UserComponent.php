@@ -29,6 +29,7 @@ class UserComponent extends Component
         $selected_id;
     //ADDRESS PORTION
     public
+        $address_id,
         $address1,
         $address2,
         $suburb,
@@ -36,9 +37,24 @@ class UserComponent extends Component
         $city;
     //CONTACT PORTION
     public
+        $contact_id,
         $mobile_number,
         $work_number,
         $home_number;
+    //ADDRESS PORTION
+    public
+        $ua_address_id,
+        $ua_address1,
+        $ua_address2,
+        $ua_suburb,
+        $ua_post_code,
+        $ua_city;
+    //CONTACT PORTION
+    public
+        $uc_contact_id,
+        $uc_mobile_number,
+        $uc_work_number,
+        $uc_home_number;
 
     public $updateMode = FALSE;
 
@@ -193,6 +209,25 @@ class UserComponent extends Component
         $this->updateAddresses = $record->addresses;
         $this->updateContacts = $record->contacts;
         $this->output = 'GETTING CONTACTS:';
+
+        //Get Address DATA to bind to data on frontend
+        foreach($this->updateAddresses as $a_index => $a_val) {
+            $this->ua_address_id[$a_val->id] = $a_val->id;
+            $this->ua_address1[$a_val->id] = $a_val->address1;
+            $this->ua_address2[$a_val->id] = $a_val->address2;
+            $this->ua_suburb[$a_val->id] = $a_val->suburb;
+            $this->ua_post_code[$a_val->id] = $a_val->post_code;
+            $this->ua_city[$a_val->id] = $a_val->city;
+        }
+
+        //Get Contacts DATA to bind to data on frontend
+        foreach($this->updateContacts as $a_index => $a_val) {
+            $this->uc_contact_id[$a_val->id] = $a_val->id;
+            $this->uc_mobile_number[$a_val->id] = $a_val->mobile_number;
+            $this->uc_work_number[$a_val->id] = $a_val->work_number;
+            $this->uc_home_number[$a_val->id] = $a_val->home_number;
+        }
+
     }
 
     public function update()
@@ -223,6 +258,7 @@ class UserComponent extends Component
 
         $this->showList = TRUE;
     }
+
     public function destroy($id)
     {
         if ($id) {

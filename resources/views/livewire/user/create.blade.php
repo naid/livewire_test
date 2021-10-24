@@ -2,7 +2,7 @@
     <div class="card flex-1 m-1">
         <div class="card-body">
             <h3>Add User</h3>
-            OUTPUT: {{$output}}
+
             <div class="form-group">
                 <label for="exampleInputPassword1">First Name</label>
                 <input type="text" wire:model="first_name" class="form-control input-sm"  placeholder="first_name">
@@ -49,7 +49,7 @@
     <!-- DYNAMIC ADDRESS -->
     <div class="flex-1 m-1">
         <div class="mt-3 mb-2">
-            <button wire:click.prevent="addAddress()" class="btn btn-warning">
+            <button wire:click.prevent="addAddress()" class="btn btn-success">
                 Add Address
             </button>
         </div>
@@ -94,7 +94,7 @@
     <!-- DYNAMIC CONTACT -->
     <div class="flex-1 m-1">
         <div class="mt-3 mb-2">
-            <button wire:click.prevent="addContact()" class="btn btn-warning">
+            <button wire:click.prevent="addContact()" class="btn btn-success">
                 Add Contact
             </button>
         </div>
