@@ -1,6 +1,7 @@
 <?php
 
 // use Illuminate\Support\Facades\Route;
+use App\Mail\NewUserNotification;
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -15,5 +16,13 @@ Route::get('/home' , 'App\Http\Controllers\HomeController@index');
 Route::get('/datatable' , 'App\Http\Controllers\HomeController@users');
 
 Auth::routes();
+
+Route::get('/send-mail', function () {
+
+    Mail::to('naid.rm@gmail.com')->send(new NewUserNotification());
+
+    return 'A message has been sent to Mailtrap!';
+
+});
 
 //Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
