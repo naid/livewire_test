@@ -63,3 +63,11 @@ DATATABLES:
 >php artisan livewire:datatable users-table --model=user
 >php artisan make:seeder UserSeeder
 >php artisan db:seed --class=UserSeeder
+
+
+>php artisan make:migration modify_addresses_table --table=addresses
+>php artisan make:migration modify_contacts_table --table=contacts
+
+
+php artisan make:migration create_addressables_table
+php artisan make:migration create_contactables_table
