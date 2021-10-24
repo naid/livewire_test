@@ -29,7 +29,13 @@ class HomeController extends Controller
 
     public function users()
     {
-        //this contains the manuaaly created datatable
+        //this contains the manually created datatable
         return view('livewire.user');
+    }
+
+    public function resetPassword()
+    {
+        return view('livewire.password');
+        
     }
 }

@@ -200,7 +200,8 @@ class UserComponent extends Component
     private function resultData()
     {
         //return User::all();
-        return User::where('id', '!=', auth()->user()->id)->paginate(10);
+        //return User::where('id', '!=', auth()->user()->id)->paginate(10);
+        return User::paginate(10);
     }
 
     public function render()
